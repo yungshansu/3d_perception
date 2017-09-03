@@ -18,13 +18,23 @@ void  cloud_cb (const sensor_msgs::PointCloud2ConstPtr& input)
 	// Do data processing here...
 	output = *input;
 	pcl::PointCloud<pcl::PointXYZ> cloud;
-	pcl::fromROSMsg (*input, cloud);
-    pcl::toROSMsg(cloud, pcl_to_ros_pointcloud2);
+	pcl::fromROSMsg (*input, cloud);//convert from PointCloud2 to pcl
+	/*
+       void fromROSMsg(const sensor_msgs::PointCloud2 &cloud, pcl::PointCloud<T>     &pcl_cloud)
+       {
+            pcl::PCLPointCloud2 pcl_pc2;
+            pcl_conversions::toPCL(cloud, pcl_pc2);
+            pcl::fromPCLPointCloud2(pcl_pc2, pcl_cloud);
+       }
+       */
 
-    pub.publish (output);
+    	pcl::toROSMsg(cloud, pcl_to_ros_pointcloud2);//convert back to PointClou    d2
+	
+	//publish to topics
+    	pub.publish (output);
 	pointcloudXYZ.publish(cloud);
 	pointcloud2_publisher.publish(pcl_to_ros_pointcloud2);
-	ROS_INFO("Success output");
+	ROS_INFO("Success output");//cout
 }   
 int   main (int argc, char** argv)
 {
