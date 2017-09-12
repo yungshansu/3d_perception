@@ -42,8 +42,8 @@ cx = msg.P[2]
 cy = msg.P[6]
 
 def main():
-    useHSV   = True
-    useDepth = True
+    useHSV   = False
+    useDepth = False
     if not useHSV:
         # Task 1
         # subscribe to image
@@ -161,11 +161,9 @@ def rosRGBDCallBack(rgb_data, depth_data):
         showPyramid(centerx, centery, zc, w, h)
     img_pub1.publish(cv_bridge.cv2_to_imgmsg(cv_image, encoding="passthrough"))
 def getXYZ(xp, yp, zc, fx,fy,cx,cy):
-    inv_fx = 1.0/fx
-    inv_fy = 1.0/fy
-    xc = zc
-    yc = -(xp-cx) *  zc * inv_fx
-    zc = -(yp-cy) *  zc * inv_fy
+    # find out xc,yc,zc from  xp, yp, zc, fx,fy,cx,cy
+    # something here
+    
     return (xc,yc,zc)
 
 def showImage(cv_image, mask_erode_image, mask_image):
