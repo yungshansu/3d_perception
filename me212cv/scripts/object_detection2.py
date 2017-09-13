@@ -113,19 +113,18 @@ def rosHSVProcessCallBack(msg):
     
 # Task 2 object detection code
 def HSVObjectDetection(cv_image, toPrint = True):
-    # convert image to HSV color space
-    hsv_image = cv2.cvtColor(cv_image, cv2.COLOR_BGR2HSV)
+   # convert image to HSV color space
+    # hsv_image = ??
     
     # define range of red color in HSV
-    lower_red = np.array([170,50,50])
-    upper_red = np.array([180,255,255])
+    # lower_red = ??
+    # upper_red = ??
 
     # Threshold the HSV image to get only red colors
-
-    mask = cv2.inRange(hsv_image, lower_red, upper_red)
+    # mask = ??
     
-    mask_eroded = cv2.erode(mask, None, iterations = 3)
-    mask_eroded_dilated = cv2.dilate(mask_eroded, None, iterations = 10)
+    # mask_eroded         = ??
+    # mask_eroded_dilated = ??
     
 
     showImage(cv_image, mask_eroded, mask_eroded_dilated)
@@ -148,15 +147,17 @@ def rosRGBDCallBack(rgb_data, depth_data):
         
         # Get depth value from depth image, need to make sure the value is in the normal range 0.1-10 meter
         if not math.isnan(cv_depthimage2[int(yp+h/2)][int(xp+w/2)]) and cv_depthimage2[int(yp+h/2)][int(xp+w/2)] > 0.1 and cv_depthimage2[int(yp+h/2)][int(xp+w/2)] < 10.0:
-            #zc = cv_depthimage2[int(yp)][int(xp)]
+            
             zc = cv_depthimage2[int(yp+h/2)][int(xp+w/2)]
+            #draw the bounding box
             cv2.rectangle(cv_image,(xp,yp),(xp+w,yp+h),[0,255,255],2)
             cv2.circle(cv_image,(int(xp+w/2),int(yp+h/2)),5,(55,255,155),4)
-        #    print "zc", zc
+        
         else:
             continue           
         centerx, centery = xp+w/2, yp+h/2
         X1 = getXYZ(xp+w/2, yp+h/2, zc, fx, fy, cx, cy)
+        #print the real coordinate
         print "x:",X1[0],"y:",X1[1],"z:",X1[2]
         showPyramid(centerx, centery, zc, w, h)
     img_pub1.publish(cv_bridge.cv2_to_imgmsg(cv_image, encoding="passthrough"))
